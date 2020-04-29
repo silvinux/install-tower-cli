@@ -12,8 +12,10 @@ Ansible 2.9 installed. The folowging packages version will be used:
 
 Role Variables
 --------------
+```
 towercli_path: /tmp/towercli-install
 towercli_repo: https://releases.ansible.com/ansible-tower-cli/rpm/epel-7-x86_64/
+```
 
 Example inventory
 ----------------
@@ -52,4 +54,4 @@ silvinux - silvinux7@gmail.com
 
 Source
 ---------
-How Do I Install Ansible Tower's Commandline Tool, tower-cli, Using RPM/YUM?[https://access.redhat.com/solutions/3938881]
+[How Do I Install Ansible Tower's Commandline Tool, tower-cli, Using RPM/YUM?](https://access.redhat.com/solutions/3938881)
