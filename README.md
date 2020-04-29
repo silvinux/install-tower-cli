@@ -52,4 +52,4 @@ silvinux - silvinux7@gmail.com
 
 Source
 ---------
-https://access.redhat.com/solutions/3938881 - How Do I Install Ansible Tower's Commandline Tool, tower-cli, Using RPM/YUM? 
+How Do I Install Ansible Tower's Commandline Tool, tower-cli, Using RPM/YUM?[https://access.redhat.com/solutions/3938881]
