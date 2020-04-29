@@ -1,0 +1,2 @@
+[towercli]
+rhel7.bcnconsulting.com ansible_connection=local

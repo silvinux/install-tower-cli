@@ -1,0 +1,64 @@
+---
+# tasks file for install-towercli
+#
+- name: Check that tower-cli repository is accesible
+  uri:
+    url: "{{ towercli_repo }}"
+  register: tower_repo_access
+  ignore_errors: yes
+
+- debug: 
+    var: tower_repo_access
+  when: tower_repo_access.status != 200
+
+- name: Add towercli repository if there is internet access.
+  yum_repository:
+    name: towercli
+    description: tower-cli repo
+    baseurl: "{{ towercli_repo }}"
+  when: tower_repo_access.status == 200
+
+- name: "Install tower-cli from repo"
+  yum:
+    name: ansible-tower-cli
+    disable_gpg_check: yes
+  when: tower_repo_access.status == 200
+
+- name: "Create the directory {{ towercli_path }} to copy towercli packages"
+  file:
+    path: "{{ towercli_path }}"
+    state: directory
+    mode: '0700'
+  when: tower_repo_access.status != 200
+
+- name: "Transfer towercli's rpms"
+  copy:
+    src: "files/{{ item.path }}"
+    dest: "{{ towercli_path }}"
+  with_filetree: files/
+  when: tower_repo_access.status != 200
+
+- name: "Find all rpm files in {{ towercli_path }} folder"
+  find:
+    paths: "{{ towercli_path }}"
+    patterns: "*.rpm"
+  register: rpm_files
+  when: tower_repo_access.status != 200
+
+- set_fact:
+    rpm_list: "{{ rpm_files.files | map(attribute='path') | list}}"
+  when: tower_repo_access.status != 200
+
+- name: "Install RPMs from local copied files"
+  yum:
+    name: "{{ rpm_list }}"
+    disable_gpg_check: yes
+  when: tower_repo_access.status != 200
+
+- name: "Delete directory {{ towercli_path }} with towercli packages"
+  file:
+    path: "{{ towercli_path }}"
+    state: directory
+    mode: '0700'
+    state: absent
+  when: tower_repo_access.status != 200
